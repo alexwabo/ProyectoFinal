@@ -1,0 +1,700 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load staticfiles %}
+	
+    <title>Admin Dashboard</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/estilos.css' %}" />
+    <!-- Bootstrap -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="{% static 'css/nprogress.css' %}" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="{% static 'css/custom.min.css' %}" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link href="{% static 'css/wizard.css' %}" rel="stylesheet">
+    <style>
+   	.tab-pane{
+	  height:300px;
+	  overflow-y:scroll;
+	  width:100%;
+	}
+    </style>
+    <!-- jQuery -->
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+  </head>
+
+  <body class="nav-md">
+    <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+                    
+            </div>
+
+            <div class="clearfix"></div>
+
+            <!-- menu profile quick info -->
+            <div class="profile clearfix">
+              <center>
+                <a href="#" class="site_title">
+                  <h3>{{ usuario }}</h3>
+                </a>
+              </center>
+              <div class="clearfix"></div>
+            </div>
+            <!-- /menu profile quick info -->
+
+            <br />
+
+            <!-- sidebar menu -->
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+              <div class="menu_section_active">
+                <ul class="nav side-menu">
+                  <li><a><i class="fa fa-home"></i> Opciones <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="/sistema/dashboard">Inicio <i class="fa fa-home pull-right"></i></a></li>
+                      <li><a href="/sistema/logout"><i class="fa fa-sign-out pull-right"></i> Cerrar sesion</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+              
+
+            </div>
+            
+            <!-- /sidebar menu -->
+
+            <!-- /menu footer buttons -->
+            
+            <!-- /menu footer buttons -->
+          </div>
+        </div>
+
+        <!-- top navigation -->
+        <div class="top_nav">
+          <div class="nav_menu">
+            <nav>
+              <div class="nav toggle">
+                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+              </div>
+
+              <ul class="nav navbar-nav navbar-right">
+                <li class="">
+                  <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    <img src="{% static 'img/img.jpg' %}" alt="">
+                    <span class=" fa fa-angle-down"></span>
+                  </a>  
+                  <ul class="dropdown-menu dropdown-usermenu pull-right">
+                    <li><a href="sistema/logout"><i class="fa fa-sign-out pull-right"></i> Cerrar sesion</a></li>
+                  </ul>
+                </li>
+                  
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+          <div>
+            <div class="row tile_count">
+            
+            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-user"></i> Total Personal</span>
+              <div class="count" id="totalPersonal"> -- </div>
+              <span class="count_bottom">Vendedores de Sucursal</span>
+            </div>
+            
+            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-user"></i> Articulos</span>
+              <div class="count" id="totalArticulos"> -- </div>
+              <span class="count_bottom">Articulos en Inventario</span>
+            </div> 
+            
+            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-user"></i> Total en Inventario</span>
+              <div class="count" id="totalInventario" style="font-size:25px"> -- </div>
+              <span class="count_bottom">Valor del Inventario</span>
+            </div>
+            
+            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-user"></i> Total Ventas</span>
+              <div class="count" style="font-size: 25px" id="totalVentas"> -- </div>
+              <span class="count_bottom">Desde Enero 2017</span>
+            </div>
+            
+            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-user"></i> Total Mes</span>
+              <div class="count" id="totalMes"> -- </div>
+              <span class="count_bottom">Ventas Marzo 2018</span>
+            </div>
+            
+            
+            </div>
+            
+            <div class="row">
+            	<div class="col-md-8 col-sm-8 col-xs-8">
+            		
+            		<div class="x_panel">
+                  <div class="x_title">
+                    <h2 id="nombreSucursal">Seleccione Sucursal</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><a href="#">Settings 1</a>
+                          </li>
+                          <li><a href="#">Settings 2</a>
+                          </li>
+                        </ul>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                  	<button id="btnAgregar" class="btn btn-info">Agregar Marcador</button><button id="btnInfo" class="btn btn-info">Consultar</button>
+                     <div id="map" style="width:100%;height:600px"></div>
+                  </div>
+                </div>
+            		
+            	
+            	</div>
+            	<div class="col-md-4 col-sm-4 col-xs-4">
+            		
+            		<div class="x_panel">
+                  <div class="x_title">
+                    <h2 id="nombre2"></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><a href="#">Settings 1</a>
+                          </li>
+                          <li><a href="#">Settings 2</a>
+                          </li>
+                        </ul>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                     <!--  <div id="chart" style="height:250px;width:100%; "></div> -->
+                     <ul class="nav nav-tabs">
+					  <li class="active"><a data-toggle="tab" href="#home">Personal</a></li>
+					  <li><a data-toggle="tab" href="#menu1">Inventario</a></li>
+					  <li><a data-toggle="tab" href="#menu2">Mas vendidos</a></li>
+					</ul>
+                     
+                    <div class="tab-content">
+					  <div id="home" class="tab-pane fade in active">
+					    
+					    <table class="table table-striped">
+						    <thead>
+						      <tr>
+						        <th>Id</th>
+						        <th>Apellidos</th>
+						        <th>Nombres</th>
+						        <th>Accion</th>
+						      </tr>
+						    </thead>
+						    <tbody id="tblPersonal">
+					    	
+					    	</tbody>
+					    </table>
+					  </div>
+					  <div id="menu1" class="tab-pane fade">
+					    
+					    <table class="table table-striped">
+						    <thead>
+						      <tr>
+						        <th>IdArticulo</th>
+						        <th>Marca</th>
+						        <th>Modelo</th>
+						        <th>Descripcion</th>
+						        <th>Stock</th>
+						        <th>Pvp</th>
+						      </tr>
+						    </thead>
+						    <tbody id="tblInventario">
+					    	
+					    	</tbody>
+					    </table>
+					    
+					  </div>
+					  <div id="menu2" class="tab-pane fade">
+					    
+					    <table class="table table-striped">
+						    <thead>
+						      <tr>
+						        <th>Articulo</th>
+						        <th>Modelo</th>
+						        <th>Total Venta</th>
+						      </tr>
+						    </thead>
+						    <tbody id="tblVentas">
+					    	
+					    	</tbody>
+					    </table>
+					    
+					  </div>
+					</div> 
+                  </div>
+                </div>
+            	
+            	<div class="x_panel">
+                  <div class="x_title">
+                    <h2 id="nombre3">Plain Page</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><a href="#">Settings 1</a>
+                          </li>
+                          <li><a href="#">Settings 2</a>
+                          </li>
+                        </ul>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                     <ul class="nav nav-tabs">
+					  <li class="active"><a data-toggle="tab" href="#c1">Ventas x mes</a></li>
+					  <li><a data-toggle="tab" href="#c2">Ventas x empleado</a></li>
+					  <li><a data-toggle="tab" href="#c3"></a></li>
+					</ul>
+                     
+                    <div class="tab-content">
+					  <div id="c1" class="tab-pane fade in active">
+					  		<div id="chart" style="height:250px;width:100%; "></div>
+					  </div>
+					  <div id="c2" class="tab-pane fade in">
+					  		<div id="chart2" style="height:250px;width:100%; "></div>
+					  </div>
+					  <div id="c3" class="tab-pane fade in">
+					  		<div id="chart3" style="height:250px;width:100%; "></div>
+					  </div>
+                     </div>
+                  </div>
+                </div>	
+            	
+            	</div>
+            </div>
+             
+          </div>
+        </div>
+        <!-- /page content -->
+
+        <!-- footer content -->
+        <footer>
+          <div class="pull-right">
+            Proyecto Final - Grupo 10
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+      </div>
+    </div>
+
+    <div id="modal" class="modal fade">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="modal_title">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p id="modal_msge"></p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" data-dismiss="modal" class="btn btn-primary">Cerrar</button>
+        </div>
+        </div>
+    </div>
+    </div>  
+      
+	<div id="modalEmail" class="modal fade">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="modal_title">Envío de correo de reclamo</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+				<label for="txtEmail">Mensaje:</label>
+				<textarea rows="3" class="form-control" id="txtEmail"></textarea>
+			</div>
+        </div>
+        <div class="modal-footer">
+			<button type="button" id="btnEmail" class="btn btn-primary">Enviar</button>
+            <button type="button" data-dismiss="modal" class="btn btn-primary">Cerrar</button>
+        </div>
+        </div>
+    </div>
+    </div>    
+	
+	<input type="hidden" id="token" value="{{ csrf_token }}">  
+	  
+    
+    <!-- Bootstrap -->
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <!-- FastClick -->
+    <script src="{% static 'js/fastclick.js' %}"></script>
+    <!-- NProgress -->
+    <script src="{% static 'js/nprogress.js' %}"></script>
+    
+    <!-- Custom Theme Scripts -->
+    <script src="{% static 'js/custom.min.js' %}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpdSKFOpelqsWlcNnzFWvbITK7D2TJWAI&libraries=places&callback=initMap" async ></script>
+    <script>
+
+    var map;
+    var datos;
+    var plot;
+    var infowindow;
+    var video;
+    var chart;
+
+	var markerArray = [];
+	var markerLocal;
+
+	var formatter = new Intl.NumberFormat('en-US', {
+		  style: 'currency',
+		  currency: 'USD',
+		  minimumFractionDigits: 2,
+		  // the default value for minimumFractionDigits depends on the currency
+		  // and is usually already 2
+		});
+	
+    var local1 = {
+    		nombre : "Comidas de Victor",
+    		lat: -2.132861,
+    		lng:-79.905115,
+    		ventas: [39.9, 51.5, 16.4, 12.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
+    		video : "https://www.youtube.com/embed/2C874QvSoCk"
+    	     }
+    	     
+    	    
+
+    function initMap() {
+       
+        var myLatLng = {lat: local1.lat, lng: local1.lng};
+
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 14,
+          center: myLatLng
+        });
+
+		var json = {};
+		var i = 1;
+        map.addListener('click', function(e) {
+
+        	console.log(e.latLng.lat());
+        	json.id = i;
+        	json.nombre = "";
+        	json.location = {};
+        	json.location.lat = e.latLng.lat();
+        	json.location.lng = e.latLng.lng();
+			console.log(JSON.stringify(json));
+        	i++;
+      });
+
+        infowindow = new google.maps.InfoWindow;
+        
+        {% for e in sucursales %}
+    		new google.maps.Marker({
+    	          position: {lat: {{ e.location.lat }}, lng: {{ e.location.lng }}},
+    	          map: map,
+    	          title: "{{ e.nombre }}"
+    	        }).addListener('click', function(e){
+    	            console.log(e);
+    	            infowindow.setContent("{{ e.nombre }}");
+    	            infowindow.open(map, this);
+    	            $("#nombreSucursal").text("Sucursal: {{ e.nombre }}");
+    	            $("#nombre2").text("Sucursal: {{ e.nombre }}");
+    	            $("#nombre3").text("Sucursal: {{ e.nombre }}");
+    	            consultarDatosSucursal({{ e.id }});
+    	        });
+	    {% endfor %}
+        
+        
+      }
+
+
+	function consultarDatosSucursal(idSucursal){
+		$.post( "/sistema/services/svc_datos", {sucursal: idSucursal, csrfmiddlewaretoken: $("#token").val()}, function(data){
+		    console.log(data);
+		    $("#totalPersonal").text(data.totalPersonal);
+		    $("#totalArticulos").text(data.totalArticulos);
+		    $("#totalInventario").text(formatter.format(data.totalInventario));
+		    $("#totalVentas").text(formatter.format(data.totalVentas));
+		    $("#totalMes").text(formatter.format(data.totalVentasMes));
+			$("#tblPersonal").empty();
+			$.each(data.listaPersonal,function(k,v){
+				$("#tblPersonal").append("<tr><td>"+v.idPersonal+"</td><td>"+v.apellidos+"</td><td>"+v.nombres+"</td><td></td></tr>");
+			});
+
+			$.each(data.listaInventario,function(k,v){
+				$("#tblInventario").append("<tr><td>"+v.idArticulo+"</td><td>"+v.marca+"</td><td>"+v.modelo+"</td><td>"+v.descripcion+"</td><td>"+v.stock+"</td><td>"+v.pvp+"</td></tr>");
+			});
+
+			$.each(data.listaVentasxArticulos,function(k,v){
+				$("#tblVentas").append("<tr><td>"+v._id.articulo+"</td><td>"+v._id.modelo+"</td><td>"+ parseFloat(Math.round(v.totalVenta * 100) / 100).toFixed(2)+"</td></tr>");
+			});
+			
+			initChart(data.listaVentasMes);
+			initChart2(data.listaVentasxVendedor);
+		    
+		});
+	}
+
+    
+    $(document).ready(function(){
+
+			$("#btnAgregar").click(function(){
+
+
+				if(markerLocal == null){
+
+					markerLocal = new google.maps.Marker({
+		    	          position: {lat: map.center.lat(), lng: map.center.lng()},
+		    	          map: map,
+		    	          draggable:true,
+		    	          title: "Nueva Sucursal"
+		    	        });
+					}else{
+						markerLocal.setPosition({lat: map.center.lat(), lng: map.center.lng()});
+						}
+				
+				});
+
+			$("#btnInfo").click(function(){
+
+				for (var i = 0; i < markerArray.length; i++ ) {
+				    markerArray[i].setMap(null);
+				  }
+				  
+				markerArray.length = 0;
+				
+				var request = {
+					    location: {lat: map.center.lat(), lng: map.center.lng()},
+					    radius: '1000'
+					  };
+				
+				service = new google.maps.places.PlacesService(map);
+				service.nearbySearch(request, callback);
+				
+			 
+				
+
+								
+				
+				});
+		
+        });
+
+
+    function callback(results, status) {
+			
+    	    $.each(results,function(k,v){
+
+					var mk = new google.maps.Marker({
+		    	          position: {lat: v.geometry.location.lat(), lng: v.geometry.location.lng()},
+		    	          map: map,
+		    	          animation: google.maps.Animation.DROP,
+						  icon:{
+							    url: v.icon, // url
+							    scaledSize: new google.maps.Size(25, 25), // scaled size
+							    origin: new google.maps.Point(0,0), // origin
+							    anchor: new google.maps.Point(0, 0) // anchor
+							},
+		    	          title: v.name
+		    	        });
+
+					markerArray.push(mk)
+
+					var infowindow = new google.maps.InfoWindow({
+					    	content: v.name
+					  });
+					  
+					mk.addListener('click', function() {
+					    infowindow.open(map, mk);
+					  });
+					
+        	    });
+    	    	
+    	      	
+    	    
+    	  
+    	}
+    
+    function initChart(listaVentasMes){
+
+		var meses = [];
+		var ventas = [];
+
+		
+		
+		$.each(listaVentasMes,function(k,v){
+
+				ventas.push(Math.round(v.totalVentas * 100) / 100)
+
+				switch(v._id.month) {
+				    case 1:
+				        v.aniomes = "Enero "+v._id.year;
+						meses.push(v.aniomes);
+				        break;
+				    case 2:
+				    	v.aniomes = "Febrero "+v._id.year;
+				    	meses.push(v.aniomes);
+				    case 3:
+				    	v.aniomes = "Marzo "+v._id.year;
+				    	meses.push(v.aniomes);
+				    case 4:
+				    	v.aniomes = "Abril "+v._id.year;
+				    	meses.push(v.aniomes);
+				    case 5:
+				    	v.aniomes = "Mayo "+v._id.year;
+				    	meses.push(v.aniomes);
+				    case 6:
+				    	v.aniomes = "Junio"+v._id.year;
+				    	meses.push(v.aniomes);
+				    case 7:
+				    	v.aniomes = "Julio "+v._id.year;
+				    	meses.push(v.aniomes);
+				    case 8:
+				    	v.aniomes = "Agosto "+v._id.year;
+				    	meses.push(v.aniomes);
+				    case 9:
+				    	v.aniomes = "Septiembre "+v._id.year;
+				    	meses.push(v.aniomes);
+				    case 10:
+				    	v.aniomes = "Octubre "+v._id.year;
+				    	meses.push(v.aniomes);
+				    case 11:
+				    	v.aniomes = "Noviembre "+v._id.year;
+				    	meses.push(v.aniomes);
+				    case 12:
+				    	v.aniomes = "Diciembre "+v._id.year; 		 	 		
+				    	meses.push(v.aniomes);
+				        
+				}
+				
+										
+			});
+
+		console.log(ventas);
+		console.log(meses);
+
+		chart = Highcharts.chart('chart',{
+	        title:{text:"Estadisticas de local"},          
+	        chart: {
+		    	type:"column",    
+	            animation: {
+	                duration: 1000
+	            }
+	        },
+	        xAxis: {
+	            categories: meses
+	        },
+	        series: [{
+	            data: ventas,
+	            name: 'Ventas 2017'
+	        }]
+
+	    });
+		
+	}
+
+    function initChart2(listaVentasxVendedor){
+
+    	var articulos = [];
+		var ventas = [];
+		var venta;
+
+		
+		
+		$.each(listaVentasxVendedor,function(k,v){
+				venta = new Object();
+				venta.name =  v.vendedor[0].apellidos+" "+v.vendedor[0].nombres,
+				venta.y = v.totalVenta,
+				venta.color = Highcharts.getOptions().colors[k];
+				ventas.push(venta); 
+	            articulos.push(venta.name);
+				
+		});
+
+    	
+		chart = Highcharts.chart('chart2', {
+    title: {
+        text: 'Articulos más vendidos'
+    },
+    xAxis: {
+        categories: articulos
+    },
+    labels: {
+        items: [{
+            html: 'Ventas x Empleado',
+            style: {
+                left: '50px',
+                top: '18px',
+                color: (Highcharts.theme && Highcharts.theme.textColor) || 'black'
+            }
+        }]
+    },
+    series: [ 
+        {
+        type: 'pie',
+        name: 'Total Ventas',
+        data: ventas,
+        center: [100, 100],
+        size: 150,
+        showInLegend: false,
+        dataLabels: {
+            enabled: true
+        }
+    }]
+});		
+
+    }
+
+
+
+
+    </script>
+  </body>
+</html>
+
+	
+	
+	

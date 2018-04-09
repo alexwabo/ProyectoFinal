@@ -1,0 +1,67 @@
+body {
+  
+}
+.steps {
+  list-style-type: none;
+  padding: 0;
+}
+.steps li {
+  display: inline-block;
+  margin-bottom: 3px;
+}
+.steps li a, .steps li p {
+  background: #e5f4fd;
+  padding: 8px 20px;
+  color: #0077bf;
+  display: block;
+  font-size: 14px;
+  font-weight: bold;
+  position: relative;
+  text-indent: 12px;
+}
+.steps li a:hover, .steps li p:hover {
+  text-decoration: none;
+}
+.steps li a:before, .steps li p:before {
+  border-bottom: 18px solid transparent;
+  border-left: 12px solid #fff;
+  border-top: 18px solid transparent;
+  content: "";
+  height: 0;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 0;
+  margin-top: -18px;
+}
+.steps li a:after, .steps li p:after {
+  border-bottom: 18px solid transparent;
+  border-left: 12px solid #e5f4fd;
+  border-top: 18px solid transparent;
+  content: "";
+  height: 0;
+  position: absolute;
+  /*right: -12px;*/
+  left:100%;
+  top: 50%;
+  width: 0;
+  margin-top: -18px;
+  z-index: 1;
+}
+.steps li.active a, .steps li.active p {
+  background: #0077bf;
+  color: #fff;
+}
+.steps li.active a:after, .steps li.active p:after {
+  border-left: 12px solid #0077bf;
+}
+.steps li.undone a, .steps li.undone p {
+  background: #eee;
+  color: #333;
+}
+.steps li.undone a:after, .steps li.undone p:after {
+  border-left: 12px solid #eee;
+}
+.steps li.undone p {
+  color: #aaa;
+}
